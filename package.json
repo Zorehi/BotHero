@@ -1,0 +1,24 @@
+{
+  "name": "herobot",
+  "version": "1.0.0",
+  "description": "Un Bot qui permet de jouer de la musique parmis tant d'autres, peut être qu'il pourra jouer de la musique à partir de Spotify...",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jérémy Legrix",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/voice": "^0.6.0",
+    "discord-akairo": "github:SkyBlockDev/discord-akairo",
+    "discord.js": "^13.0.0",
+    "ffmpeg-static": "^4.4.0",
+    "libsodium-wrappers": "^0.7.9",
+    "mongoose": "^6.0.5",
+    "ytdl-core": "^4.9.1",
+    "ytpl": "^2.2.3",
+    "ytsr": "^3.5.3"
+  }
+}
