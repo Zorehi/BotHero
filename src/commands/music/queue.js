@@ -14,7 +14,7 @@ module.exports = class QueueCommand extends Command {
       },
       channel: 'guild',
       args:  [
-				{ id: 'page', type: 'integer', default: 0}
+				{ id: 'page', type: 'integer', default: 1}
 			]
 		});
 	}

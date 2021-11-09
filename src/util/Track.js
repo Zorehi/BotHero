@@ -7,9 +7,9 @@ function filter(format) {
 		format.audioSampleRate == 48000 */;
 }
 
-async function probeAndCreateResource(readableStream, { metadata }) {
+async function probeAndCreateResource(readableStream) {
 	const { stream, type } = await demuxProbe(readableStream);
-	return createAudioResource(stream, { inputType: type, metadata: metadata });
+	return createAudioResource(stream, { inputType: type });
 }
 
 module.exports = class Track {
@@ -23,15 +23,15 @@ module.exports = class Track {
 	}
 
 	async createAudioRessource(options = {}) {
-		// if (!this.format) {
-		//   const info = await ytdl.getInfo(this.url);
-		//   this.format = info.formats.find(filter);
-		// }
-		// const canDemux = this.format && this.lengthSeconds != 0;
-		// if (canDemux) options = { ...options, filter };
-		// else if (this.lengthSeconds != 0) options = { ...options, filter: 'audioonly' };
-		// return probeAndCreateResource(ytdl(this.url, options), { metadata: this })
-		return createAudioResource(ytdl(this.url, { filter: 'audioonly' }));
+		if (!this.format) {
+		  const info = await ytdl.getInfo(this.url);
+		  this.format = info.formats.find(filter);
+		}
+		const canDemux = this.format && this.lengthSeconds != 0;
+		if (canDemux) options = { ...options, filter };
+		else if (this.lengthSeconds != 0) options = { ...options, filter: 'audioonly' };
+		return probeAndCreateResource(ytdl(this.url, options))
+		// return createAudioResource(ytdl(this.url, { filter: 'audioonly' }));
 	}
 
 	static async from(url) {

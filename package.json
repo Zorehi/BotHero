@@ -1,5 +1,5 @@
 {
-  "name": "herobot",
+  "name": "BotHero",
   "version": "1.0.0",
   "description": "Un Bot qui permet de jouer de la musique parmis tant d'autres, peut être qu'il pourra jouer de la musique à partir de Spotify...",
   "main": "src/index.js",

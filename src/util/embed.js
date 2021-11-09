@@ -34,8 +34,8 @@ function embedQueue(user, queue, page, nowPlaying) {
 		.setColor('#dc143c')
 		.setAuthor('Asked for queue', user.displayAvatarURL())
 		.setTitle(`Music Queue (${queue.length} tracks)`)
-	if (queue.length - (10+(10*page)) > 0) {
-		embed.setFooter(`Page ${page+1}/${Math.floor((queue.length-1)/10)}`);
+	if (queue.length > 10) {
+		embed.setFooter(`Page ${page}/${Math.ceil(queue.length/10)}`);
 	}
 
 	if (nowPlaying) {
@@ -46,10 +46,10 @@ function embedQueue(user, queue, page, nowPlaying) {
 
 	let info = '';
 	if (queue.length != 0) {
-		queue.slice(page*10, 10+(page*10)).forEach((track, idx) => {
+		queue.slice((page-1)*10, page*10).forEach((track, idx) => {
 			const minutes = Math.floor(track.lengthSeconds / 60);
 			const secondes = track.lengthSeconds - minutes * 60;
-			info += `\`${idx+1}\`\t[${track.title}](${track.url})\t${minutes > 10 ? minutes : '0' + minutes}:${secondes > 10 ? secondes : '0' + secondes}\n`;
+			info += `\`${idx+1+((page-1)*10)}\`\t[${track.title}](${track.url})\t${minutes > 10 ? minutes : '0' + minutes}:${secondes > 10 ? secondes : '0' + secondes}\n`;
 		})
 	} else {
 		info += '`There\'s no song in the queue`';
@@ -66,7 +66,7 @@ function embedQueue(user, queue, page, nowPlaying) {
 /**
  * 
  * @param {User} user 
- * @param {} playlist 
+ * @param {Object} playlist 
  * @returns 
  */
 function embedPlaylist(user, playlist, nowPlaying) {
