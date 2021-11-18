@@ -2,8 +2,8 @@ const { joinVoiceChannel, entersState, VoiceConnectionStatus } = require('@disco
 const { Command } = require('discord-akairo');
 const { Message } = require('discord.js');
 const { embedTrack } = require('../../util/embed');
-const MusicSubscription = require('../../util/MusicSubscription');
-const Track = require('../../util/Track');
+const MusicSubscription = require('../../structures/MusicSubscription');
+const Track = require('../../structures/Track');
 
 module.exports = class PlayCommand extends Command {
 	constructor() {

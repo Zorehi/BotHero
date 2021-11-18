@@ -13,11 +13,12 @@ async function probeAndCreateResource(readableStream) {
 }
 
 module.exports = class Track {
-	constructor({ url, title, author, lengthSeconds, format, thumbnails }) {
+	constructor({ url, title, author, lengthSeconds, formatLength, format, thumbnails }) {
 		this.url = url;
 		this.title = title;
 		this.author = author;
 		this.lengthSeconds = lengthSeconds;
+		this.formatLength = formatLength;
 		this.format = format;
 		this.thumbnails = thumbnails
 	}
@@ -37,22 +38,28 @@ module.exports = class Track {
 	static async from(url) {
 		const info = await ytdl.getInfo(url);
 		const format = info.formats.find(filter);
+		const minutes = Math.floor(info.videoDetails.lengthSeconds / 60);
+		const secondes = info.videoDetails.lengthSeconds - minutes * 60;
 		return new Track({ 
 			url: url,
 			title: info.videoDetails.title,
 			author: info.videoDetails.author,
 			lengthSeconds: info.videoDetails.lengthSeconds,
-			thumbnails: info.videoDetails.thumbnails,
+			formatLength: `${minutes}:${secondes > 9 ? secondes : '0'+secondes}`,
+			thumbnails: info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1],
 			format: format
 		});
 	}
 
 	static fromYtpl(info) {
+		const minutes = Math.floor(info.durationSec / 60);
+		const secondes = info.durationSec - minutes * 60;
 		return new Track({ 
 			url: info.shortUrl,
 			title: info.title,
 			author: info.author,
 			lengthSeconds: info.durationSec,
+			formatLength: `${minutes}:${secondes > 9 ? secondes : '0'+secondes}`,
 			thumbnails: info.bestThumbnail,
 			format: undefined
 		});

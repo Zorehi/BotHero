@@ -1,2 +1,3 @@
 node_modules
 src/util/config.js
+testDependencies.js

@@ -1,5 +1,5 @@
 const { MessageEmbed, User } = require('discord.js');
-const Track = require('./Track');
+const Track = require('../structures/Track');
 
 /**
  * 
@@ -8,16 +8,14 @@ const Track = require('./Track');
  * @returns {MessageEmbed}
  */
 function embedTrack(user, track) {
-	const minutes = Math.floor(track.lengthSeconds / 60);
-	const secondes = track.lengthSeconds - minutes * 60;
 	return new MessageEmbed()
 		.setColor('#dc143c')
 		.setAuthor('Added to queue', user.displayAvatarURL())
-		.setThumbnail(track.thumbnails[track.thumbnails.length - 1].url)
+		.setThumbnail(track.thumbnails.url)
 		.setDescription(`**[${track.title}](${track.url})**`)
 		.addFields([
 			{ name: '**Channel**', value: `[${track.author.name}](${track.author.channel_url})`, inline: true },
-			{ name: '**Track duration**', value: `${minutes > 10 ? minutes : '0' + minutes}:${secondes > 10 ? secondes : '0' + secondes}`, inline: true }
+			{ name: '**Track duration**', value: `${track.formatLength}`, inline: true }
 		])
 }
 
@@ -39,17 +37,14 @@ function embedQueue(user, queue, page, nowPlaying) {
 	}
 
 	if (nowPlaying) {
-		const minutes = Math.floor(nowPlaying.lengthSeconds / 60);
-		const secondes = nowPlaying.lengthSeconds - minutes * 60;
-		embed.addField('**Now Playing**', `[${nowPlaying.title}](${nowPlaying.url})\t${minutes > 10 ? minutes : '0' + minutes}:${secondes > 10 ? secondes : '0' + secondes}`);
+		embed.addField('**Now Playing**', `[${nowPlaying.title}](${nowPlaying.url})\t${nowPlaying.formatLength}`);
+		embed.setThumbnail(nowPlaying.thumbnails.url);
 	}
 
 	let info = '';
 	if (queue.length != 0) {
 		queue.slice((page-1)*10, page*10).forEach((track, idx) => {
-			const minutes = Math.floor(track.lengthSeconds / 60);
-			const secondes = track.lengthSeconds - minutes * 60;
-			info += `\`${idx+1+((page-1)*10)}\`\t[${track.title}](${track.url})\t${minutes > 10 ? minutes : '0' + minutes}:${secondes > 10 ? secondes : '0' + secondes}\n`;
+			info += `\`${idx+1+((page-1)*10)}\`\t[${track.title}](${track.url})\t${track.formatLength}\n`;
 		})
 	} else {
 		info += '`There\'s no song in the queue`';
@@ -67,9 +62,9 @@ function embedQueue(user, queue, page, nowPlaying) {
  * 
  * @param {User} user 
  * @param {Object} playlist 
- * @returns 
+ * @returns
  */
-function embedPlaylist(user, playlist, nowPlaying) {
+function embedPlaylist(user, playlist) {
 	const embed = new MessageEmbed()
 		.setColor('#dc143c')
 		.setAuthor('Added to queue', user.displayAvatarURL())
@@ -83,8 +78,50 @@ function embedPlaylist(user, playlist, nowPlaying) {
 	return embed;
 }
 
+/**
+ * 
+ * @param {User} user 
+ * @param {Track} nowPlaying 
+ * @returns 
+ */
+function embedNowPlaying(user, nowPlaying) {
+	return new MessageEmbed()
+		.setColor('#dc143c')
+		.setAuthor('Now playing', user.displayAvatarURL())
+		.setThumbnail(nowPlaying.thumbnails.url)
+		.setDescription(`**[${nowPlaying.title}](${nowPlaying.url})**`)
+		.addFields([
+			{ name: '**Channel**', value: `[${nowPlaying.author.name}](${nowPlaying.author.channel_url})`, inline: true },
+			{ name: '**Time left**', value: `${nowPlaying.formatLength}`, inline: true }
+		])
+}
+
+/**
+ * 
+ * @param {User} user 
+ * @param {Array} results 
+ * @returns 
+ */
+ function embedSearch(user, results, query) {
+	const embed = new MessageEmbed()
+		.setColor('#dc143c')
+		.setAuthor('Results for search', user.displayAvatarURL())
+		.setDescription(`Results for query : \`${query}\``);
+
+	let info = "";
+	results.forEach((item, idx) => {
+		info += `\`${idx+1}\`\tTitle : [${item.title}](${item.url})\n \tChannel : [${item.author.name}](${item.author.url})\n`;
+	});
+
+	embed.addField('\u200B', info);
+
+	return embed;
+}
+
 module.exports = {
 	embedTrack: embedTrack,
 	embedQueue: embedQueue,
 	embedPlaylist: embedPlaylist,
+	embedNowPlaying: embedNowPlaying,
+	embedSearch: embedSearch
 }

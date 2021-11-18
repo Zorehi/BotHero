@@ -47,8 +47,9 @@ module.exports = class HeroClient extends AkairoClient {
       directory: './src/listeners/'
     })
 
-    this.commandHandler.loadAll();
     this.commandHandler.useListenerHandler(this.listenerHandler);
+    this.listenerHandler.setEmitters({ commandHandler: this.commandHandler });
+    this.commandHandler.loadAll();
     this.listenerHandler.loadAll();
   }
 
