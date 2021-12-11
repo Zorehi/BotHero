@@ -5,6 +5,13 @@ module.exports = class SkipCommand extends Command {
 	constructor() {
 		super('skip', {
 			aliases: ['skip', 's'],
+			category: 'Musique',
+      description: {
+        content: 'La commande skip passe à la musique suivante si il y en a une',
+        usage: 'skip',
+        exemples: ['skip']
+      },
+      channel: 'guild'
 		});
 	}
 

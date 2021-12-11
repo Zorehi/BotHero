@@ -1,4 +1,5 @@
-const { MessageEmbed, User } = require('discord.js');
+const { CommandHandler, Command } = require('discord-akairo');
+const { MessageEmbed, User, Client } = require('discord.js');
 const Track = require('../structures/Track');
 
 /**
@@ -102,7 +103,7 @@ function embedNowPlaying(user, nowPlaying) {
  * @param {Array} results 
  * @returns 
  */
- function embedSearch(user, results, query) {
+function embedSearch(user, results, query) {
 	const embed = new MessageEmbed()
 		.setColor('#dc143c')
 		.setAuthor('Results for search', user.displayAvatarURL())
@@ -110,10 +111,64 @@ function embedNowPlaying(user, nowPlaying) {
 
 	let info = "";
 	results.forEach((item, idx) => {
-		info += `\`${idx+1}\`\tTitle : [${item.title}](${item.url})\n \tChannel : [${item.author.name}](${item.author.url})\n`;
+		info += `\`${idx+1}\` Title : [${item.title}](${item.url})\n\u200B   Channel : [${item.author.name}](${item.author.url})\n`;
 	});
 
 	embed.addField('\u200B', info);
+
+	return embed;
+}
+
+/**
+ * 
+ * @param {Client} client
+ * @param {CommandHandler} commandHandler 
+ * @param {String} prefix
+ * @returns 
+ */
+function embedHelp(client, commandHandler, prefix) {
+	const embed = new MessageEmbed()
+		.setColor('#dc143c')
+		.setAuthor(`Hello there, I'm ${client.user.username}!`, client.user.displayAvatarURL())
+		.setDescription(`Find the list of all our commands below!
+		**--------------**`);
+
+	for (const category of commandHandler.categories.values()) {
+		embed.addField(
+			`ф ${category.id}`,
+			`${category
+				.filter(cmd => cmd.aliases.length > 0)
+				.map(cmd => `\`${cmd.aliases[0]}\``)
+				.join(' | ')}`
+		)
+	}
+
+	embed.addField(
+		'**--------------**',
+		`**\`${prefix}help <command>\` for more info about a specific command.**
+		Examples: \`${prefix}help play\` | \`${prefix}help ping\``
+	)
+
+	return embed;
+}
+
+/**
+ * 
+ * @param {Client} client
+ * @param {CommandHandler} commandHandler 
+ * @param {String} prefix
+ * @param {Command} command
+ * @returns 
+ */
+function embedHelpCommand(user, commandHandler, prefix, command) {
+	const embed = new MessageEmbed()
+		.setColor('#dc143c')
+		.setAuthor('Asked for help', user.displayAvatarURL())
+    .setDescription(`Help for command ${command.id}`)
+
+  for (const [type, string] of Object.entries(command.description)) {
+    embed.addField(`ф ${type}`, `${string}`)
+  }
 
 	return embed;
 }
@@ -123,5 +178,7 @@ module.exports = {
 	embedQueue: embedQueue,
 	embedPlaylist: embedPlaylist,
 	embedNowPlaying: embedNowPlaying,
-	embedSearch: embedSearch
+	embedSearch: embedSearch,
+	embedHelp: embedHelp,
+	embedHelpCommand: embedHelpCommand
 }

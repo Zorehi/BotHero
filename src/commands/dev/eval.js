@@ -14,8 +14,8 @@ module.exports = class EvalCommand extends Command {
       aliases: ['eval'],
       category: 'Dev',
       description: {
-        content: 'La commande eval d\'écrire du code dans Discord, par exemple pour émettre un event',
-        usage: 'eval this.client.emit(\'<event>\', \'<variableAssocie>\')',
+        content: 'La commande eval permet d\'écrire du code dans Discord, par exemple pour émettre un event',
+        usage: 'eval <code>',
         exemples: ['eval this.client.emit(\'guildCreate\', \'messeage.guild\')', 'eval this.client.emit(\'guildMemberAdd\', \'messeage.member\')']
       },
       ownerOnly: true,

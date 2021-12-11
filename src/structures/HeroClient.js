@@ -35,7 +35,7 @@ module.exports = class HeroClient extends AkairoClient {
     this.commandHandler = new CommandHandler(this, {
       allowMention: true,
       prefix: async message => {
-        const guildPrefix = await this.guildSettings.get(message.guild);
+        const guildPrefix = await this.guildSettings.get(message.guildId);
         if (guildPrefix) return guildPrefix.prefix;
         return config.prefix;
       },

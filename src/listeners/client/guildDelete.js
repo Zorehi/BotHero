@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const { GuildModel } = require('../../structures/Models');
+const { GuildModel } = require('../../util/models');
 
 module.exports = class guildDeleteListener extends Listener {
 	constructor() {

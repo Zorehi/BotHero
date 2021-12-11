@@ -1,4 +1,4 @@
-const { VoiceConnection, createAudioPlayer, VoiceConnectionStatus, VoiceConnectionDisconnectReason, entersState, AudioPlayerStatus } = require("@discordjs/voice");
+const { VoiceConnection, createAudioPlayer, AudioPlayerStatus } = require("@discordjs/voice");
 const Track = require("./Track");
 
 module.exports = class MusicSubscription {

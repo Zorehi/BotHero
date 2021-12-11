@@ -8,8 +8,8 @@ module.exports = class RestartCommand extends Command {
       ownerOnly: true,
       description: {
         content: 'La commande restart comme sont nom l\'indique restart le bot',
-        usage: 'restart',
-        exemples: ['restart']
+        usage: '(rs)estart',
+        exemples: ['restart', 'rs']
       },
       channel: 'guild',
 		});

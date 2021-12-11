@@ -1,6 +1,6 @@
 const { Listener } = require('discord-akairo');
 const { Guild } = require('discord.js');
-const { GuildModel } = require('../../structures/Models');
+const { GuildModel } = require('../../util/models');
 
 module.exports = class guildCreateListener extends Listener {
 	constructor() {

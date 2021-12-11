@@ -64,4 +64,19 @@ module.exports = class Track {
 			format: undefined
 		});
 	}
+
+	static fromYtsr(info) {
+		const numbers = info.duration.split(':');
+		numbers.forEach(i => i = parseInt(i));
+		const durationSec = numbers[0] * 60 + numbers[1];
+		return new Track({ 
+			url: info.url,
+			title: info.title,
+			author: info.author,
+			lengthSeconds: durationSec,
+			formatLength: info.duration,
+			thumbnails: info.bestThumbnail,
+			format: undefined
+		});
+	}
 }

@@ -9,7 +9,7 @@ const Track = require('../../structures/Track');
 module.exports = class AddPlayListCommand extends Command {
 	constructor() {
 		super('addplaylist', {
-			aliases: ['addplaylist', 'addpl'],
+			aliases: ['addplaylist', 'addpl', 'addp', 'ap'],
 			category: 'Musique',
       description: {
         content: 'La commande addplaylist ajoute une playlist à la queue et la joue',

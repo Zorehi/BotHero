@@ -1,4 +1,4 @@
-const { GuildModel } = require("./Models")
+const { GuildModel } = require("../util/models");
 
 class GuildsProvider {
   async get(guild) {
@@ -6,8 +6,10 @@ class GuildsProvider {
     if (data) return data;
   }
 
+  
+
   async update(guild, settings) {
-    let data = await this.get(guild);
+    let data = await this.get(guild.id);
     if (typeof data !== 'object') data = {}
     for (const key in settings) {
       if (data[key] !== settings[key]) data[key] = settings[key]
